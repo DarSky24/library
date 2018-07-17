@@ -5,9 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import springframework.library.domain.Book;
-import springframework.library.domain.Genre;
 import springframework.library.service.BookService;
-import springframework.library.service.GenreService;
 
 import java.util.List;
 
@@ -21,24 +19,31 @@ public class BookCommands {
         this.service = service;
     }
 
-    @ShellMethod("getBook")
+    @ShellMethod("Получить книгу по ID")
     public Book getBook(
             @ShellOption int id
     ) {
         return service.getById(id);
     }
 
-    @ShellMethod("getAllBooks")
+    @ShellMethod("Получить список книг по названию")
+    public List<Book> getBookByTitle(
+            @ShellOption String title
+    ) {
+        return service.getByTitle(title);
+    }
+
+    @ShellMethod("Получить список всех книг")
     public List<Book> getAllBooks() {
         return service.getAll();
     }
 
-    @ShellMethod("getNumberOfBooks")
+    @ShellMethod("Получить количество книг")
     public int getNumberOfBooks() {
         return service.count();
     }
 
-    @ShellMethod("addBook")
+    @ShellMethod("Добавить книгу, необходимые параметры: title, genreId, authorId")
     public void addBook(
             @ShellOption String title,
             @ShellOption int genreId,
@@ -47,7 +52,7 @@ public class BookCommands {
         service.insert(title, genreId, authorId);
     }
 
-    @ShellMethod("deleteBook")
+    @ShellMethod("Удалить книгу по ID")
     public void deleteBook(
             @ShellOption int id
     ) {

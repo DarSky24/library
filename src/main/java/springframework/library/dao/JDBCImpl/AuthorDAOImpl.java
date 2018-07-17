@@ -1,5 +1,6 @@
 package springframework.library.dao.JDBCImpl;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,11 @@ public class AuthorDAOImpl implements AuthorDAO {
     public Author getById(int id) {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
-        return jdbc.queryForObject("select * from authors where id = :id", params, new AuthorMapper());
+        try {
+            return jdbc.queryForObject("select * from authors where id = :id", params, new AuthorMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -32,7 +37,12 @@ public class AuthorDAOImpl implements AuthorDAO {
         final HashMap<String, Object> params = new HashMap<>(2);
         params.put("name", name);
         params.put("surname", surname);
-        return jdbc.queryForObject("select * from authors where name = :name and surname = :surname", params, new AuthorMapper());
+        try {
+            return jdbc.queryForObject("select * from authors where name = :name and surname = :surname", params, new AuthorMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 
     @Override

@@ -44,7 +44,12 @@ public class BookDAOImpl implements BookDAO {
     public List<Book> getByTitle(String title) {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("title", title);
-        return jdbc.query("select * from books where title = :title", params, new BookMapper());
+        try {
+            return jdbc.query("select * from books where title = :title", params, new BookMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 
     @Override
@@ -53,7 +58,11 @@ public class BookDAOImpl implements BookDAO {
         params.put("title", title);
         params.put("genreId", genreId);
         params.put("authorId", authorId);
-        return jdbc.queryForObject("select * from books where title = :title and genre_id = :genreId and author_id = :authorId", params, new BookMapper());
+        try {
+            return jdbc.queryForObject("select * from books where title = :title and genre_id = :genreId and author_id = :authorId", params, new BookMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

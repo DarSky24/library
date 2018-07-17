@@ -19,24 +19,24 @@ public class AuthorCommands {
         this.service = service;
     }
 
-    @ShellMethod("getAuthor")
+    @ShellMethod("Получить автора по ID")
     public Author getAuthor(
             @ShellOption int id
     ) {
         return service.getById(id);
     }
 
-    @ShellMethod("getAllAuthors")
+    @ShellMethod("Получить список всех авторов")
     public List<Author> getAllAuthors() {
         return service.getAll();
     }
 
-    @ShellMethod("getNumberOfAuthors")
+    @ShellMethod("Получить количество авторов")
     public int getNumberOfAuthors(){
         return service.count();
     }
 
-    @ShellMethod("addAuthor")
+    @ShellMethod("Добавить нового автора, необходимые параметры: name, surname")
     public void addAuthor(
             @ShellOption String name,
             @ShellOption String surname
@@ -44,7 +44,7 @@ public class AuthorCommands {
         service.insert(name, surname);
     }
 
-    @ShellMethod("deleteAuthor")
+    @ShellMethod("Удалить автора по ID")
     public void deleteAuthor(
             @ShellOption int id
     ) {

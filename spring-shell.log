@@ -1,68 +1,8 @@
-1531826874035:help
-1531826902224:getBook 1
-1531826917382:getAllBooks
-1531826943357:get-all-geners
-1531827508647:help
-1531827527740:get-all-geners
-1531827541693:get-all-books
-1531827575582:get-book 1
-1531827587798:add-author
-1531827648050:help
-1531827665736:add-author
-1531827684740:add author Джоан Роулинг
-1531827699127:add-author Джоан Роулинг
-1531827710347:get-all-authors
-1531827730002:delete-author 2
-1531827739363:get-all-authors
-1531827784206:add-book Гарри Поттер и тайная комната 1 1
-1531827831079:add-book
-1531827946188:add-book ''арри
-1531827969217:add-book Гарри-Поттер-итайная-комната 1 1
-1531828030775:get-all-books
-1531828062645:add-book Гарри-Поттер-и-тайная-комната 1 1
-1531828073184:get-all-books
-1531828216464:delete-book 2
-1531828221793:get-all-books
-1531828272526:add-book "Гарри Поттер и тайная комната" 1 1
-1531828277778:get-all-books
-1531830624005:clear
-1531830644958:add-author Анджей Сапковский
-1531830735592:add-book "Последнее желание" 1 2
-1531830741727:get-all-books
-1531830934003:get-all-authors
-1531830946508:get-all-genres
-1531831000566:get-all-authors
-1531831016635:get-all-genres
-1531831023982:get-all-books
-1531831155079:get-all-authors
-1531831164483:get-all-genres
-1531831186587:get-all-authors
-1531831192359:get-all-genres
-1531831271464:get-all-authors
-1531831277084:get-all-genres
-1531831283202:get-all-books
-1531831334728:add-author Анджей Сапковский
-1531831347244:get-all-autors
-1531831355023:get-all-authors
-1531831373055:delete-author 1
-1531831388351:get-all-authors
-1531831617095:delete-author 1
-1531832441062:delete author 3
-1531832450080:delete-author 3
-1531832469793:delete-book 3
-1531832481914:delet-book 444
-1531832505928:delete-book 3 --stacktrace
-1531832517695:--stacktrace
-1531832521702:help
-1531832531477:stacktrace
-1531832540456:delete-author 2
-1531832543803:stacktrace
-1531833174085:get-all-book
-1531833182484:get-all-books
-1531833201270:add-book "Гарри Поттер и Филосовский каменьГарри Поттер и Филосовский камень" 1 1
-1531833212825:stacktrace
-1531833255998:add-book "Гарри Поттер и Филосовский камень" 1 1
-1531833303883:add-book "Гарри Поттер и тайная комната" 1 1
-1531833392531:stacktrace
-1531833511234:get-author 1
-1531833517527:get-author 2
+1531837557101:help
+1531837576946:get-all-books
+1531837588619:add-genre Фэнтези
+1531837622467:add-author Джоан Роулинг
+1531837654323:add-author Анджей Сапковский
+1531837662072:stacktrace
+1531837738668:add-author Анджей Сапковский
+1531837748799:get-all-authors

@@ -17,7 +17,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(int id) {
+    public Genre getById(int id) throws IllegalArgumentException {
         Genre genre = dao.getById(id);
         if (genre == null) {
             throw new IllegalArgumentException("Не существует жанра с ID = " + id);
@@ -39,8 +39,9 @@ public class GenreServiceImpl implements GenreService {
     public void insert(String genreName) {
         Genre genre = dao.getByName(genreName);
         if (genre != null) {
-            System.out.println("Данный жанр уже существует в базе данных, ID = " + genre.getId());
+            System.out.println("Такой жанр уже существует в базе данных, ID = " + genre.getId());
         } else {
+            genre = new Genre(genreName);
             dao.insert(genre);
         }
     }

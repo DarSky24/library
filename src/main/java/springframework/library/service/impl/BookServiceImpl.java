@@ -1,7 +1,6 @@
 package springframework.library.service.impl;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import springframework.library.dao.BookDAO;
 import springframework.library.domain.Author;
 import springframework.library.domain.Book;
@@ -26,7 +25,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getById(int id) {
+    public Book getById(int id) throws IllegalArgumentException {
         Book book = dao.getById(id);
         if (book == null) {
             throw new IllegalArgumentException("Не существует книг с ID = " + id);
@@ -35,9 +34,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getByTitle(String title) {
+    public List<Book> getByTitle(String title) throws IllegalArgumentException {
         List<Book> books = dao.getByTitle(title);
-        if (CollectionUtils.isEmpty(books)) {
+        if (books == null) {
             throw new IllegalArgumentException("Не существует книг с названием " + title);
         }
         return books;
@@ -55,11 +54,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void insert(String title, int genreId, int authorId) throws IllegalArgumentException {
-        Author author = authorService.getById(authorId);
-        Genre genre = genreService.getById(genreId);
-        Book book = new Book(title, genre, author);
-        dao.insert(book);
-
+        Book book = dao.getByParams(title, genreId, authorId);
+        if (book != null) {
+            System.out.println("Такая rybuf уже существует в базе данных, ID = " + book.getId());
+        } else {
+            Author author = authorService.getById(authorId);
+            Genre genre = genreService.getById(genreId);
+            book = new Book(title, genre, author);
+            dao.insert(book);
+        }
     }
 
     @Override

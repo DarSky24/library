@@ -1,6 +1,5 @@
 package springframework.library.service.impl;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import springframework.library.dao.AuthorDAO;
 import springframework.library.domain.Author;
@@ -18,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(int id) {
+    public Author getById(int id) throws IllegalArgumentException {
         Author author = dao.getById(id);
         if (author == null) {
             throw new IllegalArgumentException("Не существует автора с ID = " + id);
@@ -38,9 +37,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void insert(String name, String surname) {
-        Author author = new Author(name, surname);
-        dao.insert(author);
-
+        Author author = dao.getByNameAndSurname(name, surname);
+        if (author != null) {
+            System.out.println("Такой автор уже существует в базе данных, ID = " + author.getId());
+        } else {
+            author = new Author(name, surname);
+            dao.insert(author);
+        }
     }
 
     @Override

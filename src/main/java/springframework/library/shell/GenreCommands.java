@@ -19,31 +19,31 @@ public class GenreCommands {
         this.service = service;
     }
 
-    @ShellMethod("getGenre")
+    @ShellMethod("Получить жанр по ID")
     public Genre getGenre(
             @ShellOption int id
     ) {
         return service.getById(id);
     }
 
-    @ShellMethod("getAllGenres")
+    @ShellMethod("Получить список всех жанров")
     public List<Genre> getAllGenres() {
         return service.getAll();
     }
 
-    @ShellMethod("getNumberOfGenres")
+    @ShellMethod("Получить количество жанров")
     public int getNumberOfGeners() {
         return service.count();
     }
 
-    @ShellMethod("addGenre")
-    public void insertGenre(
+    @ShellMethod("Добавить новый жанр, необходимый параметр: genreName")
+    public void addGenre(
             @ShellOption String genreName
     ) {
         service.insert(genreName);
     }
 
-    @ShellMethod("deleteGenre")
+    @ShellMethod("Удалить жанр по ID")
     public void deleteGenre(
             @ShellOption int id
     ) {

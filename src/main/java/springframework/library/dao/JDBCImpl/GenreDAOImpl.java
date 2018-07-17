@@ -1,5 +1,6 @@
 package springframework.library.dao.JDBCImpl;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -24,14 +25,23 @@ public class GenreDAOImpl implements GenreDAO {
     public Genre getById(int id) {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
-        return jdbc.queryForObject("select * from genres where id = :id", params, new GenreMapper());
+        try {
+            return jdbc.queryForObject("select * from genres where id = :id", params, new GenreMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Genre getByName(String name) {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("name", name);
-        return jdbc.queryForObject("select * from genres where genre_name = :name", params, new GenreMapper());
+        try {
+            return jdbc.queryForObject("select * from genres where genre_name = :name", params, new GenreMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 
     @Override
