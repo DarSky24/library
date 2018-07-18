@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getByTitle(String title) throws IllegalArgumentException {
         List<Book> books = dao.getByTitle(title);
-        if (books == null) {
+        if (books == null || books.size() == 0) {
             throw new IllegalArgumentException("Не существует книг с названием " + title);
         }
         return books;
@@ -56,7 +56,7 @@ public class BookServiceImpl implements BookService {
     public void insert(String title, int genreId, int authorId) throws IllegalArgumentException {
         Book book = dao.getByParams(title, genreId, authorId);
         if (book != null) {
-            System.out.println("Такая rybuf уже существует в базе данных, ID = " + book.getId());
+            System.out.println("Такая книга уже существует в базе данных, ID = " + book.getId());
         } else {
             Author author = authorService.getById(authorId);
             Genre genre = genreService.getById(genreId);

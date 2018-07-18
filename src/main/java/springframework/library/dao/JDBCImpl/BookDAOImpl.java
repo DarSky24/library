@@ -4,9 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import springframework.library.dao.AuthorDAO;
 import springframework.library.dao.BookDAO;
-import springframework.library.dao.GenreDAO;
 import springframework.library.domain.Author;
 import springframework.library.domain.Book;
 import springframework.library.domain.Genre;
@@ -20,13 +18,9 @@ import java.util.List;
 public class BookDAOImpl implements BookDAO {
 
     private final NamedParameterJdbcOperations jdbc;
-    private final AuthorDAO authorDAO;
-    private final GenreDAO genreDAO;
 
-    public BookDAOImpl(NamedParameterJdbcOperations jdbc, AuthorDAO authorDAO, GenreDAO genreDAO) {
+    public BookDAOImpl(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
-        this.authorDAO = authorDAO;
-        this.genreDAO = genreDAO;
     }
 
     @Override
@@ -34,7 +28,9 @@ public class BookDAOImpl implements BookDAO {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
         try {
-            return jdbc.queryForObject("select * from books where id = :id", params, new BookMapper());
+            return jdbc.queryForObject("select * from books b " +
+                    "join authors a on b.author_id = a.id " +
+                    "join genres g on b.genre_id = g.id where b.id = :id", params, new BookMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -45,7 +41,9 @@ public class BookDAOImpl implements BookDAO {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("title", title);
         try {
-            return jdbc.query("select * from books where title = :title", params, new BookMapper());
+            return jdbc.query("select * from books b " +
+                    "join authors a on b.author_id = a.id " +
+                    "join genres g on b.genre_id = g.id where b.title = :title", params, new BookMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -59,7 +57,10 @@ public class BookDAOImpl implements BookDAO {
         params.put("genreId", genreId);
         params.put("authorId", authorId);
         try {
-            return jdbc.queryForObject("select * from books where title = :title and genre_id = :genreId and author_id = :authorId", params, new BookMapper());
+            return jdbc.queryForObject("select * from books b " +
+                    "join authors a on b.author_id = a.id " +
+                    "join genres g on b.genre_id = g.id " +
+                    "where b.title = :title and b.genre_id = :genreId and b.author_id = :authorId", params, new BookMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -67,7 +68,9 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select * from books", new BookMapper());
+        return jdbc.query("select * from books b " +
+                "join authors a on b.author_id = a.id " +
+                "join genres g on b.genre_id = g.id", new BookMapper());
     }
 
     @Override
@@ -92,14 +95,19 @@ public class BookDAOImpl implements BookDAO {
         jdbc.update("delete from books where id = :id", params);
     }
 
-    private class BookMapper implements RowMapper<Book> {
+    private static class BookMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             int id = resultSet.getInt("id");
             String title = resultSet.getString("title");
-            Author author = authorDAO.getById(resultSet.getInt("author_id"));
-            Genre genre = genreDAO.getById(resultSet.getInt("genre_id"));
+            int author_id = resultSet.getInt("author_id");
+            String author_name = resultSet.getString("name");
+            String author_surname = resultSet.getString("surname");
+            int genre_id = resultSet.getInt("genre_id");
+            String genre_name = resultSet.getString("genre_name");
+            Author author = new Author(author_id, author_name, author_surname);
+            Genre genre = new Genre(genre_id, genre_name);
             return new Book(id, title, genre, author);
         }
     }
