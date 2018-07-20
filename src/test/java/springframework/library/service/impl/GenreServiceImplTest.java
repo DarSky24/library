@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import springframework.library.dao.JDBCImpl.GenreDAOImpl;
+import springframework.library.dao.GenreDAO;
 import springframework.library.domain.Genre;
 
 import static org.mockito.ArgumentMatchers.refEq;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 public class GenreServiceImplTest {
 
     @Mock
-    private GenreDAOImpl dao;
+    private GenreDAO dao;
     @InjectMocks
     private GenreServiceImpl service;
 

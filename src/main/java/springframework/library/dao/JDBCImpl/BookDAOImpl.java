@@ -9,15 +9,28 @@ import springframework.library.domain.Author;
 import springframework.library.domain.Book;
 import springframework.library.domain.Genre;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BookDAOImpl implements BookDAO {
 
     private final NamedParameterJdbcOperations jdbc;
+
+    private RowMapper<Book> rowMapper = (rs, rowNum) -> {
+        int id = rs.getInt("id");
+        String title = rs.getString("title");
+        int authorId = rs.getInt("author_id");
+        String authorName = rs.getString("name");
+        String authorSurname = rs.getString("surname");
+        int genreId = rs.getInt("genre_id");
+        String genreName = rs.getString("genre_name");
+        Author author = new Author(authorId, authorName, authorSurname);
+        Genre genre = new Genre(genreId, genreName);
+        return new Book(id, title, genre, author);
+    };
 
     public BookDAOImpl(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
@@ -25,12 +38,11 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book getById(int id) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("id", id);
+        final Map<String, Object> params = Collections.singletonMap("id", id);
         try {
             return jdbc.queryForObject("select * from books b " +
                     "join authors a on b.author_id = a.id " +
-                    "join genres g on b.genre_id = g.id where b.id = :id", params, new BookMapper());
+                    "join genres g on b.genre_id = g.id where b.id = :id", params, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -38,21 +50,19 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public List<Book> getByTitle(String title) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("title", title);
+        final Map<String, Object> params = Collections.singletonMap("title", title);
         try {
             return jdbc.query("select * from books b " +
                     "join authors a on b.author_id = a.id " +
-                    "join genres g on b.genre_id = g.id where b.title = :title", params, new BookMapper());
+                    "join genres g on b.genre_id = g.id where b.title = :title", params, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-
     }
 
     @Override
     public Book getByParams(String title, int genreId, int authorId) {
-        final HashMap<String, Object> params = new HashMap<>(3);
+        final Map<String, Object> params = new HashMap<>(3);
         params.put("title", title);
         params.put("genreId", genreId);
         params.put("authorId", authorId);
@@ -60,7 +70,7 @@ public class BookDAOImpl implements BookDAO {
             return jdbc.queryForObject("select * from books b " +
                     "join authors a on b.author_id = a.id " +
                     "join genres g on b.genre_id = g.id " +
-                    "where b.title = :title and b.genre_id = :genreId and b.author_id = :authorId", params, new BookMapper());
+                    "where b.title = :title and b.genre_id = :genreId and b.author_id = :authorId", params, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -70,18 +80,18 @@ public class BookDAOImpl implements BookDAO {
     public List<Book> getAll() {
         return jdbc.query("select * from books b " +
                 "join authors a on b.author_id = a.id " +
-                "join genres g on b.genre_id = g.id", new BookMapper());
+                "join genres g on b.genre_id = g.id", rowMapper);
     }
 
     @Override
     public int count() {
-        final HashMap<String, Object> params = new HashMap<>(1);
+        final Map<String, Object> params = Collections.emptyMap();
         return jdbc.queryForObject("select count(*) from books", params, Integer.class);
     }
 
     @Override
     public void insert(Book book) {
-        final HashMap<String, Object> params = new HashMap<>(3);
+        final Map<String, Object> params = new HashMap<>(3);
         params.put("title", book.getTitle());
         params.put("genre_id", book.getGenre().getId());
         params.put("author_id", book.getAuthor().getId());
@@ -90,25 +100,8 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public void remove(Book book) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("id", book.getId());
+        final Map<String, Object> params = Collections.singletonMap("id", book.getId());
         jdbc.update("delete from books where id = :id", params);
     }
 
-    private static class BookMapper implements RowMapper<Book> {
-
-        @Override
-        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("id");
-            String title = resultSet.getString("title");
-            int author_id = resultSet.getInt("author_id");
-            String author_name = resultSet.getString("name");
-            String author_surname = resultSet.getString("surname");
-            int genre_id = resultSet.getInt("genre_id");
-            String genre_name = resultSet.getString("genre_name");
-            Author author = new Author(author_id, author_name, author_surname);
-            Genre genre = new Genre(genre_id, genre_name);
-            return new Book(id, title, genre, author);
-        }
-    }
 }
