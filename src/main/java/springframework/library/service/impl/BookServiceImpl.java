@@ -9,6 +9,7 @@ import springframework.library.service.AuthorService;
 import springframework.library.service.BookService;
 import springframework.library.service.GenreService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getById(int id) throws IllegalArgumentException {
+    public Book getById(Long id) throws IllegalArgumentException {
         Book book = dao.getById(id);
         if (book == null) {
             throw new IllegalArgumentException("Не существует книг с ID = " + id);
@@ -48,25 +49,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int count() {
+    public Long count() {
         return dao.count();
     }
 
     @Override
-    public void insert(String title, int genreId, int authorId) throws IllegalArgumentException {
-        Book book = dao.getByParams(title, genreId, authorId);
+    public void insert(String title, Long genreId, Long authorId) throws IllegalArgumentException {
+        Author author = authorService.getById(authorId);
+        Genre genre = genreService.getById(genreId);
+        Book book = dao.getByParams(title, genre, author);
         if (book != null) {
             System.out.println("Такая книга уже существует в базе данных, ID = " + book.getId());
         } else {
-            Author author = authorService.getById(authorId);
-            Genre genre = genreService.getById(genreId);
-            book = new Book(title, genre, author);
-            dao.insert(book);
-        }
+        List<Author> authors = new ArrayList<>();
+        authors.add(author);
+        List<Genre> genres = new ArrayList<>();
+        genres.add(genre);
+        book = new Book(title, genres, authors);
+        dao.insert(book);}
+
     }
 
     @Override
-    public void remove(int bookId) throws IllegalArgumentException {
+    public void remove(Long bookId) throws IllegalArgumentException {
         Book book = getById(bookId);
         dao.remove(book);
     }

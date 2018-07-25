@@ -21,7 +21,7 @@ public class AuthorCommands {
 
     @ShellMethod("Получить автора по ID")
     public Author getAuthor(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         return service.getById(id);
     }
@@ -32,7 +32,7 @@ public class AuthorCommands {
     }
 
     @ShellMethod("Получить количество авторов")
-    public int getNumberOfAuthors(){
+    public Long getNumberOfAuthors(){
         return service.count();
     }
 
@@ -46,7 +46,7 @@ public class AuthorCommands {
 
     @ShellMethod("Удалить автора по ID")
     public void deleteAuthor(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         service.remove(id);
     }

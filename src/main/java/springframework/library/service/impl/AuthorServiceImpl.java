@@ -17,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(int id) throws IllegalArgumentException {
+    public Author getById(Long id) throws IllegalArgumentException {
         Author author = dao.getById(id);
         if (author == null) {
             throw new IllegalArgumentException("Не существует автора с ID = " + id);
@@ -31,7 +31,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public int count() {
+    public Long count() {
         return dao.count();
     }
 
@@ -47,9 +47,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void remove(int authorId) throws IllegalArgumentException {
+    public void remove(Long authorId) throws IllegalArgumentException {
         Author author = getById(authorId);
         dao.remove(author);
-
     }
 }

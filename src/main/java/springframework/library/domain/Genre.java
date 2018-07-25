@@ -1,30 +1,37 @@
 package springframework.library.domain;
 
 
+import javax.persistence.*;
+
+@Entity
 public class Genre {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column
     private String genreName;
+
+    public Genre() {
+    }
 
     public Genre(String genreName) {
         this.genreName = genreName;
     }
 
-    public Genre(int id, String genreName) {
-        this.id = id;
-        this.genreName = genreName;
+    public Long getId() {
+        return id;
     }
 
-    public int getId() {
-        return id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getGenreName() {
         return genreName;
     }
 
-    @Override
-    public String toString() {
-        return id + ": " + genreName;
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 }

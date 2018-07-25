@@ -1,46 +1,61 @@
 package springframework.library.domain;
 
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
 public class Book {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column
     private String title;
-    private Genre genre;
-    private Author author;
+    @Column
+    @ManyToMany
+    private List<Genre> genres;
+    @ManyToMany
+    private List<Author> authors;
 
-    public Book(String title, Genre genre, Author author) {
-        this.title = title;
-        this.genre = genre;
-        this.author = author;
+    public Book() {
     }
 
-    public Book(int id, String title, Genre genre, Author author) {
-        this.id = id;
+    public Book(String title, List<Genre> genres, List<Author> authors) {
         this.title = title;
-        this.genre = genre;
-        this.author = author;
+        this.genres = genres;
+        this.authors = authors;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
-    @Override
-    public String toString() {
-        return id + ": Книга " + "\"" + title + "\". " + author.toString() + ". " + genre.toString() + ".";
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
+    public List<Author> getAuthors() {
+        return authors;
+    }
 
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
 }

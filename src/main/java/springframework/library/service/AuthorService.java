@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface AuthorService {
 
-    Author getById(int id);
+    Author getById(Long id);
 
     List<Author> getAll();
 
-    int count();
+    Long count();
 
     void insert(String name, String surname);
 
-    void remove (int authorId);
+    void remove (Long authorId);
 }

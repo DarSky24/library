@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface GenreService {
 
-    Genre getById(int id);
+    Genre getById(Long id);
 
     List<Genre> getAll();
 
-    int count();
+    Long count();
 
     void insert(String genreName);
 
-    void remove (int genreId);
+    void remove (Long genreId);
 }

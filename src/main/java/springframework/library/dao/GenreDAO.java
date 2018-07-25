@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface GenreDAO {
 
-    Genre getById(int id);
+    Genre getById(Long id);
 
     Genre getByName(String name);
 
     List<Genre> getAll();
 
-    int count();
+    Long count();
 
     void insert(Genre genre);
 

@@ -17,7 +17,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(int id) throws IllegalArgumentException {
+    public Genre getById(Long id) throws IllegalArgumentException {
         Genre genre = dao.getById(id);
         if (genre == null) {
             throw new IllegalArgumentException("Не существует жанра с ID = " + id);
@@ -31,7 +31,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public int count() {
+    public Long count() {
         return dao.count();
     }
 
@@ -47,7 +47,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void remove(int genreId) throws IllegalArgumentException {
+    public void remove(Long genreId) throws IllegalArgumentException {
         Genre genre = getById(genreId);
         dao.remove(genre);
     }

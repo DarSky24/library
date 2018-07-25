@@ -21,7 +21,7 @@ public class BookCommands {
 
     @ShellMethod("Получить книгу по ID")
     public Book getBook(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         return service.getById(id);
     }
@@ -39,22 +39,22 @@ public class BookCommands {
     }
 
     @ShellMethod("Получить количество книг")
-    public int getNumberOfBooks() {
+    public Long getNumberOfBooks() {
         return service.count();
     }
 
     @ShellMethod("Добавить книгу, необходимые параметры: title, genreId, authorId")
     public void addBook(
             @ShellOption String title,
-            @ShellOption int genreId,
-            @ShellOption int authorId
+            @ShellOption Long genreId,
+            @ShellOption Long authorId
     ) {
         service.insert(title, genreId, authorId);
     }
 
     @ShellMethod("Удалить книгу по ID")
     public void deleteBook(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         service.remove(id);
     }

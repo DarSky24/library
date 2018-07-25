@@ -21,7 +21,7 @@ public class GenreCommands {
 
     @ShellMethod("Получить жанр по ID")
     public Genre getGenre(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         return service.getById(id);
     }
@@ -32,7 +32,7 @@ public class GenreCommands {
     }
 
     @ShellMethod("Получить количество жанров")
-    public int getNumberOfGeners() {
+    public Long getNumberOfGeners() {
         return service.count();
     }
 
@@ -45,7 +45,7 @@ public class GenreCommands {
 
     @ShellMethod("Удалить жанр по ID")
     public void deleteGenre(
-            @ShellOption int id
+            @ShellOption Long id
     ) {
         service.remove(id);
     }

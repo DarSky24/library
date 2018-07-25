@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface AuthorDAO {
 
-    Author getById(int id);
+    Author getById(Long id);
 
     Author getByNameAndSurname (String name, String surname);
 
     List<Author> getAll();
 
-    int count();
+    Long count();
 
     void insert(Author author);
 
